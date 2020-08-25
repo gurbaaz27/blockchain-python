@@ -4,7 +4,6 @@ import hashlib
 from urllib.parse import urlparse  
 import requests
 
-
 class Blockchain(object):
 
     def __init__(self):
@@ -119,7 +118,3 @@ class Blockchain(object):
         guess_hash = hashlib.sha256(guess).hexdigest()
 
         return guess_hash[:4] == "0000"
-
-
-
-

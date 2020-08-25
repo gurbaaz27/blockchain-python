@@ -27,7 +27,7 @@ a:hover {
 html,
 body {
   height: 100%;
-  background-color: #333;
+  background-color: #1d1b1b;
 }
 
 body {
@@ -52,6 +52,7 @@ body {
 
 .masthead-brand {
   margin-bottom: 0;
+  color: #ec4d37;
 }
 
 .nav-masthead .nav-link {

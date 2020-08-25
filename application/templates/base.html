@@ -30,7 +30,7 @@
       }
     </style>
     <!-- Custom styles for this template -->
-    <link href="{{ url_for('static', filename='css/home_style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
   </head>
   <body class="text-center">
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
@@ -38,21 +38,18 @@
     <div class="inner">
       <h3 class="masthead-brand">< BlockChain /></h3>
       <nav class="nav nav-masthead justify-content-center">
-        <a class="nav-link active" href="{{ url_for('home') }}">Home</a>
-        <a class="nav-link" href="{{ url_for('mine') }}">Mine</a>
-        <a class="nav-link" href="{{ url_for('fill_form') }}">New Transaction</a>
-        <a class="nav-link" href="{{ url_for('full_chain') }}">View Chain</a>
+        <a class="nav-link {% if home %} active {% endif %}" href="{{ url_for('home') }}">Home</a>
+        <a class="nav-link {% if mine %} active {% endif %}" href="{{ url_for('mine') }}">Mine</a>
+        <a class="nav-link {% if fill_form %} active {% endif %}" href="{{ url_for('fill_form') }}">New Transaction</a>
+        <a class="nav-link {% if chain %} active {% endif %}" href="{{ url_for('full_chain') }}">View Chain</a>
       </nav>
     </div>
   </header>
 
-  <main role="main" class="inner cover">
-    <h1 class="cover-heading">Welcome to Simple Blockchain.</h1>
-    <p class="lead">So without wasting any time, lets get to the mining!</p>
-    <p class="lead">
-      <a href="https://github.com/gurbaaz27/blockchain-python" class="btn btn-lg btn-secondary">Find code in Github</a>
-    </p>
-  </main>
+  {% block content %}
+
+
+  {% endblock %}
 
   <footer class="mastfoot mt-auto">
     <div class="inner">

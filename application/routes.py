@@ -1,19 +1,20 @@
+from application import app
+from flask import Flask, jsonify, request, url_for, render_template
+
 from uuid import uuid4
 from textwrap import dedent
 
-from flask import Flask, jsonify, request, url_for, render_template
-
-from blockchain import Blockchain
-
-app = Flask(__name__, template_folder='templates')
+from .blockchain import Blockchain
 
 node_identifier = str(uuid4()).replace('-','')
 
 blockchain = Blockchain()
 
 @app.route('/')
+@app.route('/index')
+@app.route('/home')
 def home():
-    return render_template('index.html')
+    return render_template('index.html',home=True)
 
 @app.route('/mine', methods=['GET'])
 def mine():
@@ -38,23 +39,17 @@ def mine():
         'proof' : block['proof'],
         'previous_hash' : block['previous_hash'],
     }
-
-    return jsonify(response), 200
+    
+    return render_template("mine.html",mine=True, data=response)
 
 @app.route('/transactions/fill')
 def fill_form():
-    return render_template('transaction.html')
+    return render_template('transaction_form.html', fill_form=True)
 
 @app.route('/transactions/new', methods=['POST'])
 def new_transaction():
     
-    # values = request.get_json()
     values = request.form.to_dict()
-    # print(values)
-    # required = ['sender','recipient','amount']
-    # if not all(k in values for k in required):
-    #     return 'Missing Values', 400
-
     index = blockchain.new_transaction(values['sender'],values['recipient'],values['amount'])
     
     response = {'message': f'Transaction will added to Block {index}'}
@@ -69,7 +64,7 @@ def full_chain():
         'length' : len(blockchain.chain)
     }
 
-    return jsonify(response), 200
+    return render_template("chain.html",chain=True, data=response), 200
 
 
 @app.route('/nodes/register', methods=['POST'])
@@ -107,8 +102,4 @@ def consensus():
         }
 
     return jsonify(response), 200
-
-
-if __name__=="__main__":
-    app.run(host='0.0.0.0', port=5000)
-
+  

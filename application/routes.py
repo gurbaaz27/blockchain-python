@@ -1,6 +1,6 @@
 from application import app
-from flask import Flask, jsonify, request, url_for, render_template
-
+from flask import Flask, jsonify, request, url_for, redirect, render_template, flash
+from application.forms import TransactionForm, NodeRegisterForm
 from uuid import uuid4
 from textwrap import dedent
 
@@ -10,13 +10,19 @@ node_identifier = str(uuid4()).replace('-','')
 
 blockchain = Blockchain()
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("404.html")
+
+
 @app.route('/')
 @app.route('/index')
 @app.route('/home')
 def home():
     return render_template('index.html',home=True)
 
-@app.route('/mine', methods=['GET'])
+@app.route('/mine')
 def mine():
 
     last_block = blockchain.last_block
@@ -42,22 +48,24 @@ def mine():
     
     return render_template("mine.html",mine=True, data=response)
 
-@app.route('/transactions/fill')
-def fill_form():
-    return render_template('transaction_form.html', fill_form=True)
 
-@app.route('/transactions/new', methods=['POST'])
+@app.route('/transactions/new', methods=['GET','POST'])
 def new_transaction():
+    form = TransactionForm()
+    if form.validate_on_submit():
+        sender       = form.sender.data
+        recipient    = form.recipient.data
+        amount       = form.amount.data
+
+        index = blockchain.new_transaction(sender,recipient,amount)
     
-    values = request.form.to_dict()
-    index = blockchain.new_transaction(values['sender'],values['recipient'],values['amount'])
-    
-    response = {'message': f'Transaction will added to Block {index}'}
-
-    return jsonify(response), 201
+        response = f'Transaction will added to Block {index}'
+        flash(response,"success")
+        return redirect("/home")
+    return render_template('transaction.html',title="New Transaction", form=form, transaction=True)
 
 
-@app.route('/chain', methods=['GET'])
+@app.route('/chain')
 def full_chain():
     response = {
         'chain' : blockchain.chain,
@@ -66,27 +74,21 @@ def full_chain():
 
     return render_template("chain.html",chain=True, data=response), 200
 
-
-@app.route('/nodes/register', methods=['POST'])
-def register_nodes():
-    values = request.get_json()
-
-    nodes = values.get('nodes')
-    if nodes is None:
-        return 'Error : Please supply valid list of nodes', 400
-    
-    for node in nodes:
+ 
+@app.route('/nodes/register', methods=['GET','POST'])
+def register_node():
+    form = NodeRegisterForm()
+    if form.validate_on_submit():
+        node = form.node.data
         blockchain.register_node(node)
-
-    response = {
-        'message' : 'New nodes have been added',
-        'total_nodes' : list(blockchain.nodes),
-    }
-
-    return jsonify(response), 201
+    
+        response = f'New nodes have been added.\n Total nodes: {len(blockchain.nodes)}'
+        flash(response,"success")
+        return redirect("/home")
+    return render_template('register_node.html', title="New Node Registration", form=form, new_node=True)
 
 
-@app.route('/consensus', methods=['GET'])
+@app.route('/consensus')
 def consensus():
     replaced = blockchain.resolve_conflicts()
 
@@ -101,5 +103,4 @@ def consensus():
             'chain': blockchain.chain
         }
 
-    return jsonify(response), 200
-  
+    return render_template("consensus.html", data=response, consensus=True), 200

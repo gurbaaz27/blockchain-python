@@ -1,7 +1,9 @@
 /*
  * Globals
  */
-
+* {
+  font-family: 'Montserrat', sans-serif;
+}
 /* Links */
 a,
 a:focus,
@@ -27,7 +29,7 @@ a:hover {
 html,
 body {
   height: 100%;
-  background-color: #1d1b1b;
+  background-color: #003049;
 }
 
 body {
@@ -52,7 +54,7 @@ body {
 
 .masthead-brand {
   margin-bottom: 0;
-  color: #ec4d37;
+  color: #fcbf49;
 }
 
 .nav-masthead .nav-link {

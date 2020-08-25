@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form namer="register_node" action="" method="post">
+    <fieldset class="form-group">
+      <legend>{{ title }}</legend>
+    </fieldset>
+  
+    {{ form.hidden_tag() }}
+      <p>
+          {{ form.node.label }}<br>
+          {{ form.node }}<br>
+          {% for error in form.node.errors %}
+              <span class="error-message">{{ error }}</span>
+          {% endfor%}
+      </p>
+      <p>
+        {{ form.submit() }}
+    </p>
+  </form>
+
+{% endblock %}

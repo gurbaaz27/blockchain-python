@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form namer="transaction" action="" method="post">
+  <fieldset class="form-group">
+    <legend>{{ title }}</legend>
+  </fieldset>
+
+  {{ form.hidden_tag() }}
+    <p>
+        {{ form.sender.label }}<br>
+        {{ form.sender }}<br>
+        {% for error in form.sender.errors %}
+            <span class="error-message">{{ error }}</span>
+        {% endfor%}
+    </p>
+    <p>
+        {{ form.recipient.label }}<br>
+        {{ form.recipient }}<br>
+        {% for error in form.recipient.errors %}
+            <span class="error-message">{{ error }}</span>
+        {% endfor %}
+    </p>
+    <p>
+        {{ form.amount.label }}<br>
+        {{ form.amount }}<br>
+        {% for error in form.amount.errors %}
+            <span class="error-message">{{ error }}</span>
+        {% endfor%}
+    </p>
+    <p>
+      {{ form.submit() }}
+  </p>
+</form>
+{% endblock %}

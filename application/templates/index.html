@@ -2,6 +2,16 @@
 
 {% block content %}
 <main role="main" class="inner cover">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{category}}">
+        <p>{{ message }}</p>
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% endwith %}
+  
   <h1 class="cover-heading">Welcome to Simple Blockchain.</h1>
   <p class="lead">So without wasting any time, lets get to the mining!</p>
   <p class="lead">

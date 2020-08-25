@@ -7,7 +7,9 @@
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v4.1.1">
     <title>Blockchain · Home</title>
-
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:200,400,700" rel="stylesheet">
+  
     <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/cover/">
 
     <!-- Bootstrap core CSS -->
@@ -36,12 +38,14 @@
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
   <header class="masthead mb-auto">
     <div class="inner">
-      <h3 class="masthead-brand">< BlockChain /></h3>
+      <h3 class="masthead-brand"><b>< BlockChain /></b></h3>
       <nav class="nav nav-masthead justify-content-center">
         <a class="nav-link {% if home %} active {% endif %}" href="{{ url_for('home') }}">Home</a>
         <a class="nav-link {% if mine %} active {% endif %}" href="{{ url_for('mine') }}">Mine</a>
-        <a class="nav-link {% if fill_form %} active {% endif %}" href="{{ url_for('fill_form') }}">New Transaction</a>
+        <a class="nav-link {% if transaction %} active {% endif %}" href="{{ url_for('new_transaction') }}">New Transaction</a>
         <a class="nav-link {% if chain %} active {% endif %}" href="{{ url_for('full_chain') }}">View Chain</a>
+        <a class="nav-link {% if new_node %} active {% endif %}" href="{{ url_for('register_node') }}">New Node</a>
+        <a class="nav-link {% if consensus %} active {% endif %}" href="{{ url_for('consensus') }}">Consensus</a>
       </nav>
     </div>
   </header>
